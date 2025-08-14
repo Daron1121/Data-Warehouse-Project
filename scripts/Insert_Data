@@ -1,56 +1,79 @@
 CREATE OR ALTER PROCEDURE bronze.load_bronze As
 Begin
-	Truncate Table Bronze.crm_cust_info;
-	BULK INSERT Bronze.crm_cust_info
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+	declare @start_time datetime, @end_time datetime
+	BEGIN TRY
+		print '============================';
+		print 'Loading Bronze Layer';
+		print '============================';
 
-	Truncate Table Bronze.crm_prd_info;
-	BULK INSERT Bronze.crm_prd_info
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+		print '----------------------------';
+		print 'Loading CRM tables';
+		print '----------------------------';
+		set @start_time = GETDATE();
+		Truncate Table Bronze.crm_cust_info;
+		BULK INSERT Bronze.crm_cust_info
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
 
-	Truncate Table Bronze.crm_sales_details;
-	BULK INSERT Bronze.crm_sales_details
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+		Truncate Table Bronze.crm_prd_info;
+		BULK INSERT Bronze.crm_prd_info
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
 
-	Truncate Table Bronze.erp_CUST_AZ12;
-	BULK INSERT Bronze.erp_CUST_AZ12
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+		Truncate Table Bronze.crm_sales_details;
+		BULK INSERT Bronze.crm_sales_details
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
 
-	Truncate Table Bronze.erp_LOC_A101;
-	BULK INSERT Bronze.erp_LOC_A101
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+		print '----------------------------';
+		print 'Loading ERP tables';
+		print '----------------------------';
 
-	Truncate Table Bronze.erp_PX_CAT_G1V2;
-	BULK INSERT Bronze.erp_PX_CAT_G1V2
-	From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
-	with (
-		firstrow = 2,
-		fieldterminator = ',',
-		tablock 
-	);
+		Truncate Table Bronze.erp_CUST_AZ12;
+		BULK INSERT Bronze.erp_CUST_AZ12
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
+
+		Truncate Table Bronze.erp_LOC_A101;
+		BULK INSERT Bronze.erp_LOC_A101
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
+
+		Truncate Table Bronze.erp_PX_CAT_G1V2;
+		BULK INSERT Bronze.erp_PX_CAT_G1V2
+		From 'C:\Users\wszts\Desktop\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+		with (
+			firstrow = 2,
+			fieldterminator = ',',
+			tablock 
+		);
+	END TRY
+	BEGIN CATCH
+		print '=============================='
+		print 'ERROR OCCURED DURING LOADING BRONZE LAYER'
+		print 'Error Message' + error_message();
+		print 'Error Message' + cast(Error_Number() as NVARCHAR);
+		print 'Error Message' + cast(Error_state() as NVARCHAR);
+		print '=============================='
+	END CATCH
 END
