@@ -1,3 +1,13 @@
+/*
+=======================================================================
+Insert Data From Files
+=======================================================================
+Script purpouse:
+	This script insert data from files using exast path, into existing tables
+	in database, exery single insert counts time of insert, also whole batch
+	counts time.
+*/
+
 CREATE OR ALTER PROCEDURE bronze.load_bronze As
 Begin
 	declare @start_time datetime, @end_time datetime, @start_batch datetime, @end_batch datetime
