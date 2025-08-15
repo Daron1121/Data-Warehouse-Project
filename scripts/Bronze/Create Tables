@@ -1,4 +1,13 @@
-
+/*
+----------------------------------------------------------
+DDL Create Table code
+----------------------------------------------------------
+Script purpose:
+	This script create table structure for 6 files into
+	database. This is created in Bronze schema, drops everything
+	if table already exists,
+----------------------------------------------------------
+*/
 -- Create tables for every file 
 if OBJECT_ID ('bronze.crm_cust_info' , 'U') IS NOT NULL
 	Drop table bronze.crm_cust_info;
