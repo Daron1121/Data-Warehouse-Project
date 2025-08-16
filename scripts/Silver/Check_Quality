@@ -1,0 +1,48 @@
+-- Check for Nulls or Duplicates in Primary Key
+-- Expectation: no result
+
+select 
+cst_id,
+count(*)
+from Silver.crm_cust_info
+group by cst_id
+having count(*) > 1 or cst_id is null
+
+-- Check for unwanted Spaces
+-- Expectation: No Result
+Select cst_key
+from Silver.crm_cust_info
+where cst_key != trim(cst_key)
+
+-- Data Standardization & Consistency
+select distinct
+cst_gndr
+from Silver.crm_cust_info
+
+select * from Silver.crm_cust_info
+
+
+-- Check for unwanted Spaces
+-- Expectation: No Result
+Select prd_nm
+from Bronze.crm_prd_info
+where prd_nm != trim(prd_nm)
+
+-- crm_prd_info
+
+--Check for Nulls or negative numbers
+-- Expectation: No Result
+select
+prd_cost
+from Silver.crm_prd_info
+where prd_cost is null or prd_cost < 0
+
+-- Data Standardization & Consistency
+select distinct
+prd_line
+from Silver.crm_prd_info
+
+-- check for invalid date orders
+select *
+from Silver.crm_prd_info
+where prd_end_dt < prd_start_dt
